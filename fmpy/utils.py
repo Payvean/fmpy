@@ -25,7 +25,10 @@ else:  # no break
 
 
 api_key = data['api_key']
-output_path = data['output_path']
+try:
+    output_path = data['output_path']
+except Exception as e:
+    output_path = None
 
 base_url_v3 = "https://financialmodelingprep.com/api/v3/"
 base_url_v4 = "https://financialmodelingprep.com/api/v4/"

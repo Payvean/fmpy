@@ -1,7 +1,5 @@
 from .utils import *
-
 import requests
-
 from pandas import DataFrame, Series
 from types import SimpleNamespace
 from typing import Union, Optional, Any
@@ -9,11 +7,12 @@ from typing import Union, Optional, Any
 __author__ = 'Lukas Schröder'
 __date__ = '2023-05-14'
 __version__ = '0.1.0'
-__rights__ = 'Copyright (c) 2023 Lukas Schröder'
+
 __doc__ = """
 This module is related to the advanced data section of the financial modeling prep API endpoint and 
-provides section specific python functions that can be used to retrieve the data easily and well processed.
+provides section specific python functions.
 """
+
 __all__ = ['get_standard_industrial_classification',
            'get_standard_industrial_classification_list',
            'get_commitment_of_traders_analysis',
@@ -21,10 +20,10 @@ __all__ = ['get_standard_industrial_classification',
            'get_cod_trading_symbols_list']
 
 
-@check_arguments
 def get_standard_industrial_classification(symbol: Optional[str] = None, cik: Optional[str] = None,
                                            sic_code: Optional[str] = None, as_pandas: bool = True,
-                                           *args, **kwargs) -> Union[Union[Series, DataFrame], Union[SimpleNamespace, Any]]:
+                                           *args, **kwargs) -> Union[
+    Union[Series, DataFrame], Union[SimpleNamespace, Any]]:
     """
     Retrieves the Standard Industrial Classification (SIC) code and details for a specific
     company or for all companies from the Financial Modeling Prep API. SIC is a system for
@@ -82,7 +81,6 @@ def get_standard_industrial_classification(symbol: Optional[str] = None, cik: Op
     return json_data
 
 
-@check_arguments
 def get_standard_industrial_classification_list(as_pandas: bool = True,
                                                 industry_title: Optional[str] = None,
                                                 sic_code: Optional[str] = None,
@@ -127,7 +125,6 @@ def get_standard_industrial_classification_list(as_pandas: bool = True,
     return json_data
 
 
-@check_arguments
 def get_cod_trading_symbols_list(as_pandas: bool = True,
                                  *args, **kwargs) -> Union[DataFrame, Any]:
     url = f"{base_url_v4}commitment_of_traders_report/list?apikey={api_key}"
@@ -141,12 +138,11 @@ def get_cod_trading_symbols_list(as_pandas: bool = True,
     return json_data
 
 
-# TODO: Complete functions below
-@check_arguments
+@not_implemented
 def get_commitment_of_traders_report():
     pass
 
 
-@check_arguments
+@not_implemented
 def get_commitment_of_traders_analysis():
     pass

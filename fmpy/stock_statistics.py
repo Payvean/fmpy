@@ -8,21 +8,19 @@ from typing import Union, Optional, Any
 __author__ = 'Lukas Schröder'
 __date__ = '2023-05-22'
 __version__ = '0.1.0'
-__rights__ = 'Copyright (c) 2023 Lukas Schröder. Copyright (c) 2023 AHL.'
 
 __doc__ = """
-This module is related to the company information data section of the financial modeling prep API endpoint and 
-provides section specific python functions that can be used to retrieve the data easily and well processed.
+This module is related to the stock statistics section of the financial modeling prep API endpoint and 
+provides section specific python functions.
 """
 
 __all__ = ['get_social_sentiment',
            'get_stock_grade',
            'get_earning_surprises',
            'get_analyst_estimates',
-           'get_merger_and_acquisition',
-           ]
+           'get_merger_and_acquisition', ]
 
-@check_arguments
+
 def get_social_sentiment(symbol: Optional[str] = None, page: Union[int, str] = 0,
                          type_: Optional[str] = None, source: Optional[str] = None,
                          historical: bool = False, as_pandas: bool = True,
@@ -49,7 +47,6 @@ def get_social_sentiment(symbol: Optional[str] = None, page: Union[int, str] = 0
     return process_dataframe(json_data, *args, **kwargs) if as_pandas else json_data
 
 
-@check_arguments
 def get_stock_grade(symbol: str, limit: Union[int, str] = 500,
                     as_pandas: bool = True, *args, **kwargs) -> Union[DataFrame, Any]:
     url = f"{base_url_v3}grade/{symbol}?limit={limit}&apikey={api_key}"
@@ -59,7 +56,7 @@ def get_stock_grade(symbol: str, limit: Union[int, str] = 500,
     json_data = response.json()
     return process_dataframe(json_data, *args, **kwargs) if as_pandas else json_data
 
-@check_arguments
+
 def get_earning_surprises(symbol: str, as_pandas: bool = True,
                           *args, **kwargs) -> Union[DataFrame, Any]:
     url = f"{base_url_v3}earnings-surprises/{symbol}?apikey={api_key}"
@@ -69,10 +66,12 @@ def get_earning_surprises(symbol: str, as_pandas: bool = True,
     json_data = response.json()
     return process_dataframe(json_data, *args, **kwargs) if as_pandas else json_data
 
-@check_arguments
+
+
 def get_analyst_estimates(symbol: str, period: str = 'quarter',
                           limit: Union[int, str] = 30,
-                          as_pandas: bool = True) -> Union[DataFrame, Any]:
+                          as_pandas: bool = True,
+                          *args, **kwargs) -> Union[DataFrame, Any]:
     url = f"{base_url_v3}analyst-estimates/{symbol}?limit={limit}&period={period}&apikey={api_key}"
     response = requests.get(url)
     if response.status_code != 200:
@@ -80,7 +79,7 @@ def get_analyst_estimates(symbol: str, period: str = 'quarter',
     json_data = response.json()
     return process_dataframe(json_data, *args, **kwargs) if as_pandas else json_data
 
-@check_arguments
+
 def get_merger_and_acquisition(search: bool = False, name: Optional[str] = None,
                                page: Union[int, str] = 0, as_pandas: bool = True,
                                *args, **kwargs) -> Union[Series, DataFrame, SimpleNamespace, Any]:

@@ -20,7 +20,16 @@ exchanges = ['ETF',
              'NSE',
              'LSE']
 
-@check_arguments
+
+__author__ = 'Lukas Schröder'
+__date__ = '2023-05-20'
+__version__ = '0.1.0'
+
+__doc__ = """
+This module is related to the stock lock up tool section of the financial modeling prep API endpoint and 
+provides section specific python functions.
+"""
+
 def get_company_search(query: str, exchange: str = 'ALL',
                        limit: Union[int, str] = 10, as_pandas=True,
                        options: Optional[dict] = None, *args, **kwargs):
@@ -37,7 +46,6 @@ def get_company_search(query: str, exchange: str = 'ALL',
         return pd.concat(dataframes, axis=0)
     return get_company_search_(query, exchange, limit, as_pandas, options, *args, **kwargs)
 
-@check_arguments
 def get_company_search_(query: str, exchange: str,
                        limit: Union[int, str] = 10, as_pandas=True,
                        options: Optional[dict] = None, *args, **kwargs):
@@ -70,7 +78,7 @@ def get_company_search_(query: str, exchange: str,
         return df
     return json_data
 
-
+@not_implemented
 def stock_screener():
     """
     Stock screener is a more advanced way to search for stocks. 
@@ -107,7 +115,7 @@ def get_list_of_countries():
     url = f"{base_url_v3}get-all-countries?apikey={api_key}"
     response = requests.get(url)
     if response.status_code != 200:
-        raise APIRequestError(response.status_code, "Failed to fetch country list")
+        raise APIRequestError(response.status_code)
     return response.json()
 
 

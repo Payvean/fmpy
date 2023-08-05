@@ -1,14 +1,8 @@
 # Helper functions and API Key for the user
 from .utils import *
-
 import requests
-import pandas as pd
-
-from pandas import DataFrame, Series
-from io import StringIO
-from types import SimpleNamespace
+from pandas import DataFrame
 from typing import List, Union, Any, IO, Optional
-from os import PathLike
 from datetime import datetime, date
 
 url_api = f"apikey={api_key}"
@@ -16,11 +10,10 @@ url_api = f"apikey={api_key}"
 __author__ = 'Lukas Schröder'
 __date__ = '2023-05-22'
 __version__ = '0.1.0'
-__rights__  = 'Copyright (c) 2023 Lukas Schröder'
 
 __doc__ = """
 This module is related to the stock calendars section of the financial modeling prep API endpoint and 
-provides section specific python functions that can be used to retrieve the data easily and well processed.
+provides section specific python functions.
 """
 
 __all__ = ['get_earnings_calendar',
@@ -35,7 +28,6 @@ __all__ = ['get_earnings_calendar',
            'get_ipo_calendar_with_prospectus',
            ]
 
-@check_arguments
 def get_earnings_calendar(as_pandas: bool = True,
                           from_: Optional[Union[str, datetime, date]]=None,
                           to_=None, *args, **kwargs) -> Union[DataFrame, Any]:
@@ -92,7 +84,7 @@ def get_earnings_calendar(as_pandas: bool = True,
     return json_data
 
 
-@check_arguments
+
 def get_historical_earning_calendar(symbol: str,
                                     limit: Union[int, str] = 80,
                                     as_pandas: bool = True, *args, **kwargs) -> Union[DataFrame, Any]:
@@ -143,7 +135,7 @@ def get_historical_earning_calendar(symbol: str,
     return json_data
 
 
-@check_arguments
+
 def get_earnings_calendar_confirmed(as_pandas: bool = True,
                                     from_: Optional[Union[str, datetime, date]] = None,
                                     to_: Optional[Union[str, datetime, date]] = None,
@@ -199,7 +191,7 @@ def get_earnings_calendar_confirmed(as_pandas: bool = True,
     return json_data
 
 
-@check_arguments
+
 def get_ipo_calendar(as_pandas: bool = True,
                      from_: Optional[Union[str, datetime, date]] = None,
                      to_: Optional[Union[str, datetime, date]] = None,
@@ -252,7 +244,7 @@ def get_ipo_calendar(as_pandas: bool = True,
     return json_data
 
 
-@check_arguments
+
 def get_ipo_calendar_with_prospectus(as_pandas: bool = True,
                                      from_: Optional[Union[str, datetime, date]] = None,
                                      to_: Optional[Union[str, datetime, date]] = None,
@@ -269,7 +261,7 @@ def get_ipo_calendar_with_prospectus(as_pandas: bool = True,
         return process_dataframe(json_data, index_=index_, *args, **kwargs)
     return json_data
 
-@check_arguments
+
 def get_ipo_calendar_confirmed(as_pandas: bool = True,
                                from_: Optional[Union[str, datetime, date]] = None,
                                to_: Optional[Union[str, datetime, date]] = None,
@@ -286,7 +278,7 @@ def get_ipo_calendar_confirmed(as_pandas: bool = True,
         return process_dataframe(json_data, index_=index_, *args, **kwargs)
     return json_data
 
-@check_arguments
+
 def get_stock_split_calendar(as_pandas: bool = True,
                              from_: Optional[Union[str, datetime, date]] = None,
                              to_: Optional[Union[str, datetime, date]] = None,
@@ -303,7 +295,7 @@ def get_stock_split_calendar(as_pandas: bool = True,
         return process_dataframe(json_data, index_=index_, *args, **kwargs)
     return json_data
 
-@check_arguments
+
 def get_dividend_calendar(as_pandas: bool = True,
                           from_: Optional[Union[str, datetime, date]] = None,
                           to_: Optional[Union[str, datetime, date]] = None,
@@ -320,7 +312,7 @@ def get_dividend_calendar(as_pandas: bool = True,
         return process_dataframe(json_data, index_=index_, *args, **kwargs)
     return json_data
 
-@check_arguments
+
 def get_historical_dividends(symbol: str, as_pandas: bool = True,
                              *args, **kwargs) -> Union[DataFrame, Any]:
     url = f"{base_url_v3}historical-price-full/stock_dividend/{symbol}?apikey={api_key}"
@@ -331,7 +323,7 @@ def get_historical_dividends(symbol: str, as_pandas: bool = True,
     data = json_data['historical']
     return process_dataframe(json_data, *args, **kwargs) if as_pandas else json_data
 
-@check_arguments
+
 def get_economic_calendar(as_pandas: bool = True,
                           from_: Optional[Union[str, datetime, date]] = None,
                           to_: Optional[Union[str, datetime, date]] = None,

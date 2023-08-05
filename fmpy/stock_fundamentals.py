@@ -2,24 +2,20 @@
 from .utils import *
 
 import requests
-import pandas as pd
-
 from pandas import DataFrame, Series
-from io import StringIO
 from types import SimpleNamespace
-from typing import List, Union, Any, IO, Optional
-from os import PathLike
+from typing import List, Union, Any, Optional
+
 
 url_api = f"apikey={api_key}"
 
 __author__ = 'Lukas Schröder'
 __date__ = '2023-05-12'
 __version__ = '0.1.0'
-__rights__ = 'Copyright (c) 2023 Lukas Schröder'
 
 __doc__ = """
 This module is related to the stock fundamentals section of the financial modeling prep API endpoint and 
-provides section specific python functions that can be used to retrieve the data easily and well processed.
+provides section specific python functions.
 """
 
 __all__ = ['get_financial_statements_list',
@@ -128,7 +124,6 @@ def get_income_statement(symbol: str, limit: Union[int, str] = 120, period: str 
     return json_data
 
 
-@check_arguments
 def get_balance_sheet_statement(symbol: str, limit: Union[int, str] = 120, period: str = 'quarter',
                                 as_pandas: bool = True, as_reported: bool = False,
                                 *args, **kwargs) -> Union[DataFrame, Union[Any, dict]]:
@@ -179,7 +174,7 @@ def get_balance_sheet_statement(symbol: str, limit: Union[int, str] = 120, perio
     return json_data
 
 
-@check_arguments
+
 def get_cashflow_statement(symbol: str, limit: Union[int, str] = 120, period: str = 'quarter',
                            as_pandas: bool = True, as_reported: bool = False, *args, **kwargs) -> Union[
     DataFrame, Union[Any, dict]]:
@@ -241,7 +236,7 @@ def get_cashflow_statement(symbol: str, limit: Union[int, str] = 120, period: st
     return json_data
 
 
-@check_arguments
+
 def get_shares_float_symbol(symbol: Union[str, list], as_pandas: bool = True,
                             *args, **kwargs) -> Union[Union[Series, DataFrame], SimpleNamespace]:
     """
@@ -301,7 +296,7 @@ def get_shares_float_symbol(symbol: Union[str, list], as_pandas: bool = True,
     return SimpleNamespace(**data)
 
 
-@check_arguments
+
 def get_shares_float_all(as_pandas: bool = True,
                          *args, **kwargs) -> Union[DataFrame, Any]:
     """
@@ -348,7 +343,7 @@ def get_shares_float_all(as_pandas: bool = True,
     return json_data
 
 
-@check_arguments
+
 def get_earning_call_transcript_dates(symbol: str) -> List[list]:
     """
     Fetches the dates of earning call transcripts for a specific company, identified by its ticker symbol,
@@ -381,7 +376,7 @@ def get_earning_call_transcript_dates(symbol: str) -> List[list]:
     return response.json()
 
 
-@check_arguments
+
 def get_earning_call_transcript(symbol: str, quarter: Union[int, str] = 1,
                                 year: Union[int, str] = 2023, content: bool = True,
                                 batch: bool = False, as_pandas: bool = True,
@@ -445,7 +440,7 @@ def get_earning_call_transcript(symbol: str, quarter: Union[int, str] = 1,
     return SimpleNamespace(**data)
 
 
-@check_arguments
+
 def get_sec_filings(symbol: str, as_pandas: bool = True, type_: Optional[str] = None,
                     page: Optional[Union[int, str]] = None,
                     limit: Optional[Union[int, str]] = None, *args, **kwargs) -> Union[DataFrame, Any]:
@@ -503,7 +498,7 @@ def get_sec_filings(symbol: str, as_pandas: bool = True, type_: Optional[str] = 
     return json_data
 
 
-@check_arguments
+
 def get_company_notes(symbol: str, as_pandas: bool = True, *args, **kwargs) -> Union[DataFrame, Any]:
     """
     Retrieves company notes data for a specific company from the Financial Modeling Prep API.
@@ -546,7 +541,7 @@ def get_company_notes(symbol: str, as_pandas: bool = True, *args, **kwargs) -> U
     return process_dataframe(json_data, *args, **kwargs) if as_pandas else json_data
 
 
-@check_arguments
+
 def get_sales_and_revenue_by_segments(symbol: str, period: str = 'quarter', structure: str = 'flat',
                                       as_pandas: bool = True, *args, **kwargs) -> Union[DataFrame, Any]:
     """
@@ -600,7 +595,7 @@ def get_sales_and_revenue_by_segments(symbol: str, period: str = 'quarter', stru
     return json_data
 
 
-@check_arguments
+
 def get_revenue_geographic_by_segments(symbol: str, period: str = 'quarter', structure: str = 'flat',
                                        as_pandas: bool = True, *args, **kwargs) -> Union[DataFrame, Any]:
     """
@@ -655,7 +650,7 @@ def get_revenue_geographic_by_segments(symbol: str, period: str = 'quarter', str
     return json_data
 
 
-@check_arguments
+
 def get_financial_reports_dates(symbol: str, as_pandas: bool = True, *args, **kwargs) -> Union[DataFrame, Any]:
     """
     Retrieves the dates of financial reports for a specific company from the Financial Modeling Prep API.
@@ -698,7 +693,6 @@ def get_financial_reports_dates(symbol: str, as_pandas: bool = True, *args, **kw
     return process_dataframe(json_data, *args, **kwargs) if as_pandas else json_data
 
 
-@check_arguments
 def get_sec_rss_feed(page: Union[int, str] = 0, limit: Union[str, int] = 50,
                      type_: Optional[str] = None, from_: Optional[str] = None,
                      to_: Optional[str] = None, is_done: Optional[str] = None,
@@ -757,7 +751,6 @@ def get_sec_rss_feed(page: Union[int, str] = 0, limit: Union[str, int] = 50,
     return process_dataframe(json_data, *args, **kwargs) if as_pandas else json_data
 
 
-@check_arguments
 def get_reports_on_form_10k(symbol: str, year: Union[int, str] = 2023, quarter_period: str = 'FY') -> Any:
     """
     Retrieves financial report data for a specific company from the Form 10-K filings.
@@ -795,7 +788,6 @@ def get_reports_on_form_10k(symbol: str, year: Union[int, str] = 2023, quarter_p
     return response.json()
 
 
-@check_arguments
 def get_rss_feed_8k_forms(page: Union[int, str] = 0, from_: Optional[str] = None,
                           to_: Optional[str] = None, has_financial: Optional[str] = None,
                           as_pandas: bool = True, *args, **kwargs) -> Union[DataFrame, Any]:

@@ -8,11 +8,10 @@ from typing import Union, Optional, Any
 __author__ = 'Lukas Schröder'
 __date__ = '2023-05-20'
 __version__ = '0.1.0'
-__rights__ = 'Copyright (c) 2023 Lukas Schröder'
 
 __doc__ = """
 This module is related to the stock fundamentals Analysis section of the financial modeling prep API endpoint and 
-provides section specific python functions that can be used to retrieve the data easily and well processed.
+provides section specific python functions.
 """
 
 __all__ = ['get_company_financial_ratios',
@@ -28,7 +27,7 @@ __all__ = ['get_company_financial_ratios',
            ]
 
 
-@check_arguments
+
 def get_company_financial_ratios(symbol: str, ttm: bool = True, period: str = 'quarter',
                                  limit: Optional[Union[str, int]] = None,
                                  as_pandas: bool = False,
@@ -79,7 +78,7 @@ def get_company_financial_ratios(symbol: str, ttm: bool = True, period: str = 'q
     return SimpleNamespace(**data)
 
 
-@check_arguments
+
 def get_score(symbol: str, as_pandas: bool = True):
     """
     Retrieves the score for a specified stock symbol.
@@ -116,7 +115,7 @@ def get_score(symbol: str, as_pandas: bool = True):
     return Series(data) if as_pandas else SimpleNamespace(**data)
 
 
-@check_arguments
+
 def get_owner_earnings(symbol: str, as_pandas: bool = True, *args, **kwargs) -> Union[DataFrame, Any]:
     """
     Retrieves the owner earnings for a specified stock symbol.
@@ -156,7 +155,7 @@ def get_owner_earnings(symbol: str, as_pandas: bool = True, *args, **kwargs) -> 
     return process_dataframe(json_data, *args, **kwargs) if as_pandas else json_data
 
 
-@check_arguments
+
 def get_company_enterprise_value(symbol: str, period: str = 'quarter',
                                  limit: Optional[Union[str, int]] = None,
                                  as_pandas: bool = True, *args, **kwargs) -> Union[DataFrame, Any]:
@@ -202,7 +201,7 @@ def get_company_enterprise_value(symbol: str, period: str = 'quarter',
     return process_dataframe(json_data, *args, **kwargs) if as_pandas else json_data
 
 
-@check_arguments
+
 def get_income_statement_growth(symbol: str, limit: Optional[Union[str, int]] = None,
                                 as_pandas: bool = True, *args, **kwargs) -> Union[DataFrame, Any]:
     url = f'{base_url_v3}income-statement-growth/{symbol}?apikey={api_key}'
@@ -214,7 +213,7 @@ def get_income_statement_growth(symbol: str, limit: Optional[Union[str, int]] = 
     return process_dataframe(json_data, *args, **kwargs) if as_pandas else json_data
 
 
-@check_arguments
+
 def get_balance_sheet_statement_growth(symbol: str, limit: Optional[Union[str, int]] = None,
                                        as_pandas: bool = True, *args, **kwargs) -> Union[DataFrame, Any]:
     url = f'{base_url_v3}balance-sheet-statement-growth/{symbol}?apikey={api_key}'
@@ -226,7 +225,7 @@ def get_balance_sheet_statement_growth(symbol: str, limit: Optional[Union[str, i
     return process_dataframe(json_data, *args, **kwargs) if as_pandas else json_data
 
 
-@check_arguments
+
 def get_cashflow_statement_growth(symbol: str, limit: Optional[Union[str, int]] = None,
                                   as_pandas: bool = True, *args, **kwargs) -> Union[DataFrame, Any]:
     url = f'{base_url_v3}cash-flow-statement-growth/{symbol}?apikey={api_key}'
@@ -238,7 +237,7 @@ def get_cashflow_statement_growth(symbol: str, limit: Optional[Union[str, int]] 
     return process_dataframe(json_data, *args, **kwargs) if as_pandas else json_data
 
 
-@check_arguments
+
 def get_company_key_metrics(symbol: str, ttm: bool = True, period: str = 'quarter',
                             limit: Optional[Union[str, int]] = None, as_pandas: bool = True,
                             *args, **kwargs) -> Union[Union[Series, DataFrame], Any]:
@@ -256,7 +255,7 @@ def get_company_key_metrics(symbol: str, ttm: bool = True, period: str = 'quarte
     return SimpleNamespace(**data)
 
 
-@check_arguments
+
 def get_company_financial_growth(symbol: str, period: str = 'quarter',
                                  limit: Optional[Union[str, int]] = None,
                                  as_pandas: bool = True, *args, **kwargs) -> Union[DataFrame, Any]:
@@ -269,7 +268,7 @@ def get_company_financial_growth(symbol: str, period: str = 'quarter',
     return process_dataframe(json_data, *args, **kwargs) if as_pandas else json_data
 
 
-@check_arguments
+
 def get_company_rating(symbol: str, historical: bool = False,
                        limit: Optional[Union[str, int]] = None,
                        as_pandas: bool = True, *args, **kwargs):
@@ -289,7 +288,7 @@ def get_company_rating(symbol: str, historical: bool = False,
     return process_dataframe(json_data, *args, **kwargs) if as_pandas else json_data
 
 
-@check_arguments
+
 def get_discounted_cash_flow(symbol: str, advanced: bool = False,
                              levered: bool = False, as_pandas: bool = True,
                              *args, **kwargs) -> Union[DataFrame, Any, float]:

@@ -1,16 +1,34 @@
-import json
 import os
+import json
+import warnings
 import pandas as pd
+from functools import wraps
 from pandas import DataFrame
 
-with open("../config.json") as config:
-    data = json.load(config)
+__author__ = 'Lukas Schröder'
+__date__ = '2023-08-05'
+__version__ = '0.1.0'
+
+__doc__ = """
+This module is intended to store helper function used within all endpoint SDK modules.
+"""
+
+paths = ["../config.json", "./config.json"]
+
+for path in paths:
+    if os.path.isfile(path):
+        with open(path) as config:
+            data = json.load(config)
+        break
+else:  # no break
+    raise FileNotFoundError("Could not find config.json in any of the specified paths")
+
 
 api_key = data['api_key']
+output_path = data['output_path']
 
 base_url_v3 = "https://financialmodelingprep.com/api/v3/"
 base_url_v4 = "https://financialmodelingprep.com/api/v4/"
-output_path = None
 
 
 class APIRequestError(Exception):
@@ -64,16 +82,15 @@ def to_snake_case(column_name):
     while i < len(column_name):
         char = column_name[i]
         if char.isupper():
-            # Check if there are two or more consecutive uppercase characters
             j = i + 1
             while j < len(column_name) and column_name[j].isupper():
                 j += 1
             if j - i > 1:
                 result.append('_')
-                result.append(column_name[i:j - 1].lower())  # Exclude the last uppercase character
-                i = j - 1  # Set i to the index of the last uppercase character
+                result.append(column_name[i:j - 1].lower())
+                i = j - 1
             else:
-                if i > 0:  # Add an underscore if it's not the first character
+                if i > 0:
                     result.append('_')
                 result.append(char.lower())
                 i += 1
@@ -207,3 +224,21 @@ def format_number(df, format_='mil'):
                 else:
                     df.at[index, col] = float(df.at[index, col])
     return df
+
+
+def in_development(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        warnings.warn(f"The function '{func.__name__}' is still in development and may not work as expected.", Warning)
+        return func(*args, **kwargs)
+
+    return wrapper
+
+
+def not_implemented(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        warnings.warn(f"The function '{func.__name__}' is not yet implemented", Warning)
+        return func(*args, **kwargs)
+
+    return wrapper

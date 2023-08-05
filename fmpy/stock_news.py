@@ -7,7 +7,21 @@ from typing import Union, Iterable, Any
 __author__ = 'Lukas Schröder'
 __date__ = '2023-05-14'
 __version__ = '0.1.0'
-__rights__  = 'Copyright (c) 2023 Lukas Schröder. Copyright (c) 2023 AHL.'
+
+__doc__ = """
+This module is related to the stock news section of the financial modeling prep API endpoint and 
+provides section specific python functions.
+"""
+
+__all__ = [
+    'get_fmp_articles',
+    'get_stock_news',
+    'get_crypto_news',
+    'get_forex_news',
+    'get_general_news',
+    'get_press_releases',
+    'get_stock_news_with_sentiment',
+]
 
 
 def get_fmp_articles(page: Union[int, str] = 0, size: Union[int, str] = 5, as_pandas: bool = True,
@@ -20,7 +34,8 @@ def get_fmp_articles(page: Union[int, str] = 0, size: Union[int, str] = 5, as_pa
     data = json_data['content']
     return process_dataframe(data, *args, **kwargs) if as_pandas else json_data
 
-@check_arguments
+
+
 def get_stock_news(tickers: Union[str, Iterable],
                    page: Union[int, str] = 0, limit: Union[int, str] = 50,
                    as_pandas: bool = True, *args, **kwargs) -> Union[pd.DataFrame, Any]:
@@ -35,7 +50,8 @@ def get_stock_news(tickers: Union[str, Iterable],
         return process_dataframe(json_data, *args, **kwargs)
     return json_data
 
-@check_arguments
+
+
 def get_stock_news_with_sentiment(page: Union[int, str] = 0,
                                   limit: Union[int, str] = 50,
                                   as_pandas: bool = True,
@@ -48,9 +64,10 @@ def get_stock_news_with_sentiment(page: Union[int, str] = 0,
     index = kwargs.pop('index_', 'symbol')
     return process_dataframe(json_data, *args, **kwargs)
 
-@check_arguments
+
+
 def get_crypto_news(symbol: str = None, page: Union[int, str] = 0, as_pandas: bool = True,
-                   *args, **kwargs):
+                    *args, **kwargs):
     url = f"{base_url_v4}crypto_news?page={page}&apikey={api_key}"
     url = url + f"&symbol={symbol}" if symbol is not None else url
     response = requests.get(url)
@@ -59,9 +76,10 @@ def get_crypto_news(symbol: str = None, page: Union[int, str] = 0, as_pandas: bo
     json_data = response.json()
     return process_dataframe(json_data, *args, **kwargs) if as_pandas else json_data
 
-@check_arguments
+
+
 def get_forex_news(symbol: str = None, page: Union[int, str] = 0, as_pandas: bool = True,
-                  *args, **kwargs):
+                   *args, **kwargs):
     url = f"{base_url_v4}forex_news?page={page}&apikey={api_key}"
     url = url + f"&symbol={symbol}" if symbol is not None else url
     response = requests.get(url)
@@ -70,7 +88,8 @@ def get_forex_news(symbol: str = None, page: Union[int, str] = 0, as_pandas: boo
     json_data = response.json()
     return process_dataframe(json_data, *args, **kwargs) if as_pandas else json_data
 
-@check_arguments
+
+
 def get_general_news(page: Union[int, str] = 0, as_pandas: bool = True,
                      *args, **kwargs):
     url = f"{base_url_v4}general_news?page={page}&apikey={api_key}"
@@ -80,7 +99,8 @@ def get_general_news(page: Union[int, str] = 0, as_pandas: bool = True,
     json_data = response.json()
     return process_dataframe(json_data, *args, **kwargs) if as_pandas else json_data
 
-@check_arguments
+
+
 def get_press_releases(symbol: str, page: Union[int, str] = 0, as_pandas: bool = True,
                        *args, **kwargs):
     url = f"{base_url_v3}press-releases/{symbol}?page={page}&apikey={api_key}"

@@ -3,9 +3,20 @@ from .utils import *
 import requests
 import pandas as pd
 
+__author__ = 'Lukas Schröder'
+__date__ = '2023-08-05'
+__version__ = '0.1.0'
 
-@check_arguments
-def get_esg_score(symbol, as_pandas=True):
+__doc__ = """This module is related to the esg_score data section of the financial modeling 
+prep API endpoint and provides section specific python functions."""
+
+__all__ = [
+    'get_esg_score',
+    'get_company_esg_risk_ratings',
+    'get_esg_benchmarking_by_sector_and_year',
+]
+
+def get_esg_score(symbol, as_pandas=True, *args, **kwargs):
     url = f"{base_url_v4}esg-environmental-social-governance-data?symbol={symbol}&apikey={api_key}"
     response = requests.get(url)
     if response.status_code != 200:
@@ -21,8 +32,7 @@ def get_esg_score(symbol, as_pandas=True):
     return json_data
 
 
-@check_arguments
-def get_company_esg_risk_ratings(symbol, as_pandas=True):
+def get_company_esg_risk_ratings(symbol, as_pandas=True, *args, **kwargs):
     local_base = 'esg-environmental-social-governance-data-ratings'
     url = f"{base_url_v4}{local_base}?symbol={symbol}&apikey={api_key}"
     response = requests.get(url)
@@ -39,8 +49,7 @@ def get_company_esg_risk_ratings(symbol, as_pandas=True):
     return json_data
 
 
-@check_arguments
-def get_esg_benchmarking_by_sector_and_year(year, as_pandas=True):
+def get_esg_benchmarking_by_sector_and_year(year, as_pandas=True, *args, **kwargs):
     local_base = 'esg-environmental-social-governance-sector-benchmark'
     url = f"{base_url_v4}{local_base}?year={year}&apikey={api_key}"
     response = requests.get(url)

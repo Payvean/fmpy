@@ -8,11 +8,10 @@ from typing import Union, Any
 __author__ = 'Lukas Schröder'
 __date__ = '2023-05-29'
 __version__ = '0.1.0'
-__rights__ = 'Copyright (c) 2023 Lukas Schröder'
 
 __doc__ = """
-This module is related to the stock fundamentals Analysis section of the financial modeling prep API endpoint and 
-provides section specific python functions that can be used to retrieve the data easily and well processed.
+This module is related to the economics section of the financial modeling prep API endpoint and 
+provides section specific python functions.
 """
 
 __all__ = ['get_market_risk_premium',
@@ -20,7 +19,6 @@ __all__ = ['get_market_risk_premium',
            'get_economic_indicator']
 
 
-@check_arguments
 def get_market_risk_premium(as_pandas: bool = True, *args, **kwargs) -> Union[DataFrame, Any]:
     url = f"{base_url_v4}market_risk_premium?apikey={api_key}"
     response = requests.get(url)
@@ -33,7 +31,6 @@ def get_market_risk_premium(as_pandas: bool = True, *args, **kwargs) -> Union[Da
     return json_data
 
 
-@check_arguments
 def get_treasury_rates(from_: Union[str, datetime.datetime] = '2008-01-01',
                        to_: Union[str, datetime.datetime] = str(datetime.date.today()),
                        as_pandas: bool = True, *args, **kwargs) -> Union[DataFrame, Any]:
@@ -45,7 +42,6 @@ def get_treasury_rates(from_: Union[str, datetime.datetime] = '2008-01-01',
     return process_dataframe(json_data, *args, **kwargs) if as_pandas else json_data
 
 
-@check_arguments
 def get_economic_indicator(name: str, from_: Union[str, datetime.datetime] = '2008-01-01',
                            to_: Union[str, datetime.datetime] = str(datetime.date.today()),
                            as_pandas: bool = True, *args, **kwargs) -> Union[Series, Any]:

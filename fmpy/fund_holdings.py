@@ -14,15 +14,28 @@ from datetime import datetime, date
 __author__ = 'Lukas Schröder'
 __date__ = '2023-05-22'
 __version__ = '0.1.0'
-__rights__ = 'Copyright (c) 2023 Lukas Schröder'
 
 __doc__ = """
-This module is related to the stock calendars section of the financial modeling prep API endpoint and 
-provides section specific python functions that can be used to retrieve the data easily and well processed.
+This module is related to the fund_holdings section of the financial modeling prep API endpoint and 
+provides section specific python functions.
 """
 
+__all__ = [
+    'get_etf_expense_ratio',
+    'get_institutional_holders',
+    'get_13F_list',
+    'get_form_13F',
+    'get_cusip_mapper',
+    'get_mutual_fund_holders',
+    'get_etf_sector_weightings',
+    'get_cik_by_name',
+    'get_etf_country_weightings',
+    'get_etf_stock_exposure',
+    'get_company_name_by_cik',
+    'get_filing_dates_by_cik',
+]
 
-@check_arguments
+
 def get_etf_expense_ratio(symbol: str, as_pandas: bool = True) -> Union[Series, SimpleNamespace]:
     url = f"{base_url_v4}etf-info?symbol={symbol}&apikey={api_key}"
     response = requests.get(url)
@@ -35,7 +48,6 @@ def get_etf_expense_ratio(symbol: str, as_pandas: bool = True) -> Union[Series, 
     return SimpleNamespace(**data)
 
 
-@check_arguments
 def get_institutional_holders(symbol: str, as_pandas: bool = True, *args, **kwargs) -> Union[DataFrame, Any]:
     url = f"{base_url_v3}institutional-holder/{symbol}?apikey={api_key}"
     response = requests.get(url)
@@ -48,7 +60,6 @@ def get_institutional_holders(symbol: str, as_pandas: bool = True, *args, **kwar
     return json_data
 
 
-@check_arguments
 def get_mutual_fund_holders(symbol: str, as_pandas: bool = True, *args, **kwargs) -> Union[DataFrame, Any]:
     url = f"{base_url_v3}mutual-fund-holder/{symbol}?apikey={api_key}"
     response = requests.get(url)
@@ -61,7 +72,6 @@ def get_mutual_fund_holders(symbol: str, as_pandas: bool = True, *args, **kwargs
     return json_data
 
 
-@check_arguments
 def get_etf_sector_weightings(symbol: str, as_pandas: bool = True, *args, **kwargs) -> Union[DataFrame, Any]:
     url = f"{base_url_v3}etf-sector-weightings/{symbol}?apikey={api_key}"
     response = requests.get(url)
@@ -74,7 +84,6 @@ def get_etf_sector_weightings(symbol: str, as_pandas: bool = True, *args, **kwar
     return json_data
 
 
-@check_arguments
 def get_etf_country_weightings(symbol: str, as_pandas: bool = True, *args, **kwargs) -> Union[DataFrame, Any]:
     url = f"{base_url_v3}etf-country-weightings/{symbol}?apikey={api_key}"
     response = requests.get(url)
@@ -87,7 +96,6 @@ def get_etf_country_weightings(symbol: str, as_pandas: bool = True, *args, **kwa
     return json_data
 
 
-@check_arguments
 def get_etf_stock_exposure(symbol: str, as_pandas: bool = True, *args, **kwargs) -> Union[DataFrame, Any]:
     url = f"{base_url_v3}etf-stock-exposure/{symbol}?apikey={api_key}"
     response = requests.get(url)
@@ -100,7 +108,6 @@ def get_etf_stock_exposure(symbol: str, as_pandas: bool = True, *args, **kwargs)
     return json_data
 
 
-@check_arguments
 def get_13F_list(as_pandas: bool = True, *args, **kwargs) -> Union[DataFrame, Any]:
     url = f"{base_url_v3}cik_list?apikey={api_key}"
     response = requests.get(url)
@@ -113,7 +120,6 @@ def get_13F_list(as_pandas: bool = True, *args, **kwargs) -> Union[DataFrame, An
     return json_data
 
 
-@check_arguments
 def get_cik_by_name(name: str, as_pandas: bool = True, *args, **kwargs) -> Union[DataFrame, Any]:
     url = f"{base_url_v3}cik-search/{name}?apikey={api_key}"
     response = requests.get(url)
@@ -126,7 +132,6 @@ def get_cik_by_name(name: str, as_pandas: bool = True, *args, **kwargs) -> Union
     return json_data
 
 
-@check_arguments
 def get_company_name_by_cik(cik: str):
     url = f"{base_url_v3}cik/{cik}?apikey={api_key}"
     response = requests.get(url)
@@ -139,7 +144,6 @@ def get_company_name_by_cik(cik: str):
     return data['name']
 
 
-@check_arguments
 def get_form_13F(cik: str, date: str = str(date.today()),
                  as_pandas: bool = True, *args, **kwargs) -> Union[DataFrame, Any]:
     url = f"{base_url_v3}form-thirteen/{cik}?date={date}&apikey={api_key}"
@@ -150,7 +154,6 @@ def get_form_13F(cik: str, date: str = str(date.today()),
     return process_dataframe(json_data, *args, **kwargs) if as_pandas else json_data
 
 
-@check_arguments
 def get_filing_dates_by_cik(cik: str) -> Any:
     url = f"{base_url_v3}form-thirteen-date/{cik}?apikey={api_key}"
     response = requests.get(url)
@@ -160,7 +163,6 @@ def get_filing_dates_by_cik(cik: str) -> Any:
     return json_data
 
 
-@check_arguments
 def get_cusip_mapper(cik: str) -> Any:
     url = f"{base_url_v3}cusip/{cik}?apikey={api_key}"
     response = requests.get(url)
@@ -170,5 +172,6 @@ def get_cusip_mapper(cik: str) -> Any:
     return json_data
 
 
+@not_implemented
 def form_13F_asset_allocation_diversification():
     pass

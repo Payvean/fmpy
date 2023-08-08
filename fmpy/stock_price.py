@@ -149,7 +149,7 @@ def get_stock_historical_price(tickers: Union[str, Iterable],
     if as_pandas:
         if interval is not None:
             df = process_dataframe(json_data, *args, **kwargs)
-        if len(tickers) > 5:
+        elif len(tickers) > 5:
             multi_df = pd.DataFrame()
             for symbol_data in json_data['historicalStockList']:
                 symbol = symbol_data['symbol']
@@ -166,7 +166,7 @@ def get_stock_historical_price(tickers: Union[str, Iterable],
                     multi_df = multi_df.join(df, how='outer')
             return multi_df
         else:
-            df = process_dataframe(json_data, *args, **kwargs)
+            df = process_dataframe(json_data['historical'], *args, **kwargs)
         return df
     return json_data
 

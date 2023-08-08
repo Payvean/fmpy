@@ -1,3 +1,7 @@
 Metadata-Version: 2.1
 Name: fmpy
 Version: 0.1
+Author: Lukas Schröder
+Author-email: lukaspython@gmail.com
+License: MIT
+License-File: LICENSE
